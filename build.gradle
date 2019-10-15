@@ -1,0 +1,28 @@
+plugins {
+	id 'org.springframework.boot' version '2.1.9.RELEASE'
+	id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+	id 'java'
+}
+
+group = 'com.geolocalizacion.api'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+repositories {
+	maven {
+		url  "http://jcenter.bintray.com"
+	}
+}
+
+dependencies {
+	// https://mvnrepository.com/artifact/org.springframework/spring-web
+	compile group: 'org.springframework', name: 'spring-web', version: '5.1.10.RELEASE'
+	// https://mvnrepository.com/artifact/com.google.maps/google-maps-services
+	compile group: 'com.google.maps', name: 'google-maps-services', version: '0.9.4'
+	// https://mvnrepository.com/artifact/org.projectlombok/lombok
+	compile group: 'org.projectlombok', name: 'lombok', version: '1.18.10'
+	// https://mvnrepository.com/artifact/com.byteowls/jopencage
+	compile group: 'com.byteowls', name: 'jopencage', version: '1.2.1'
+	implementation 'org.springframework.boot:spring-boot-starter'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
