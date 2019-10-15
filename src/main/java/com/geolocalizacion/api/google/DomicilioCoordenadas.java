@@ -1,6 +1,7 @@
 package com.geolocalizacion.api.google;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Component;
@@ -33,20 +34,32 @@ public class DomicilioCoordenadas {
 			sb.append(ubicacion.get("localidad"));
 			sb.append(", ").append(ubicacion.get("estado"));
 			sb.append(", Mexico").append(", ");
-			sb.append("\\+").append("CA&key=").append(API_KEY);
+			sb.append("CA&key=").append(API_KEY);
 			String informacion = sb.toString().replaceAll(" ", "\\+");
 			log.info(informacion);
 			RestTemplate restTemplate = new RestTemplate();
 			Container result = restTemplate.getForObject(sb.toString(), Container.class);
 //			ResponseEntity<String> response = restTemplate.getForEntity(sb.toString(), String.class);
 //			log.info("Respuesta: {}",response.getBody());
-			log.info("Respuesta: {}",result.toString());
-			retorno.put("longitud", result.getResults().stream().filter(t-> t.getGeometry()!=null).findFirst().get().getGeometry().getLocation().getLng());
-			retorno.put("latitud", result.getResults().stream().filter(t-> t.getGeometry()!=null).findFirst().get().getGeometry().getLocation().getLat());
+			if(result != null) {
+				if(compruebaLista(result.getResults()) && result.getResults().stream().anyMatch(t->t.getFormatted_address().contains("Mexico"))) {
+					log.info("Respuesta: {}",result.toString());
+					retorno.put("longitud", result.getResults().stream().filter(t-> t.getGeometry()!=null).findFirst().get().getGeometry().getLocation().getLng());
+					retorno.put("latitud", result.getResults().stream().filter(t-> t.getGeometry()!=null).findFirst().get().getGeometry().getLocation().getLat());
+				}
+			}
 		}catch(Exception ex) {
 			log.info("Exception obtenida: {}",ex);
 		}
 		return retorno;
+	}
+	
+	public boolean compruebaLista(List lista) {
+		if(lista == null)
+			return false;
+		if(lista.isEmpty())
+			return false;
+		return true;
 	}
 	
 }
